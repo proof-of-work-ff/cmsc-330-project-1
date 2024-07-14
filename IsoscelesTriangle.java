@@ -11,7 +11,7 @@ public class IsoscelesTriangle extends SolidPolygon {
     public IsoscelesTriangle(Color color, Point top, int height, int width) {
         super(color, 3);
         int[] x_points = {top.x, top.x + width / 2, top.x - width / 2};
-        int[] y_points = {top.y, top.y - height, top.y - height};
+        int[] y_points = {top.y, top.y + height, top.y + height};
         createPolygon(x_points, y_points);
     }
 }
