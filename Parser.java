@@ -44,6 +44,7 @@ class Parser {
 
     private void parseImages(Scene scene, Token imageToken) throws LexicalError, SyntaxError, IOException {
         int height, width, offset, radius;
+
         verifyNextToken(Token.COLOR);
         int[] colors = getNumberList(3);
         Color color = new Color(colors[0], colors[1], colors[2]);
@@ -68,6 +69,38 @@ class Parser {
             width = lexer.getNumber();
             Rectangle rectangle = new Rectangle(color, point, height, width);
             scene.addImage(rectangle);
+        } else if (imageToken == Token.PARALLELOGRAM) {
+            Point upperLeft = point;
+            location = getNumberList(2);
+            Point lowerRight = new Point(location[0], location[1]);
+            verifyNextToken(Token.OFFSET);
+            verifyNextToken(Token.NUMBER);
+            offset = lexer.getNumber();
+            Parallelogram parallelogram = new Parallelogram(color, upperLeft, lowerRight, offset);
+            scene.addImage(parallelogram);
+        } else if (imageToken == Token.ISOSCELES) {
+            verifyNextToken(Token.HEIGHT);
+            verifyNextToken(Token.NUMBER);
+            height = lexer.getNumber();
+            verifyNextToken(Token.WIDTH);
+            verifyNextToken(Token.NUMBER);
+            width = lexer.getNumber();
+            IsoscelesTriangle isoscelesTriangle = new IsoscelesTriangle(color, point, height, width);
+            scene.addImage(isoscelesTriangle);
+        } else if (imageToken == Token.REGULAR_POLYGON) {
+            verifyNextToken(Token.SIDES);
+            verifyNextToken(Token.NUMBER);
+            int sides = lexer.getNumber();
+            verifyNextToken(Token.RADIUS);
+            verifyNextToken(Token.NUMBER);
+            radius = lexer.getNumber();
+            RegularPolygon regularPolygon = new RegularPolygon(color, sides, point, radius);
+            scene.addImage(regularPolygon);
+        } else if (imageToken == Token.TEXT) {
+            verifyNextToken(Token.STRING);
+            String textStr = lexer.getLexeme();
+            Text text = new Text(color, point, textStr);
+            scene.addImage(text);
         } else {
              throw new SyntaxError(lexer.getLineNo(), "Unexpected image name " + imageToken);
         }

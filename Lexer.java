@@ -35,11 +35,13 @@ class Lexer {
                 return Token.IDENTIFIER;
             case StreamTokenizer.TT_EOF:
                 return Token.EOF;
+            case '"':
+                return Token.STRING;
             default:
                 for (int i = 0; i < punctuation.length(); i++)
                     if (token == punctuation.charAt(i))
                         return punctuationTokens[i];
-        }
+       }
         return Token.EOF;
     }
 
